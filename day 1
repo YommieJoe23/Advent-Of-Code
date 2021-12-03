@@ -3,9 +3,9 @@ import pandas as pd
 
 data = np.genfromtxt('input.txt',dtype=int, delimiter = '\t')
 
-# method 1: math
+# part 1
 count = 0
-for i in range (0,len(data)-1):
+for i in range (0,len(data)):
     if i==0:
         count == 0
     elif data[i]>data[i-1]:
@@ -13,7 +13,7 @@ for i in range (0,len(data)-1):
 
 print(count)
 
-
+# part 2
 count = 0
 for i in range(3,len(data)):
     if data[i-3]<data[i]:
