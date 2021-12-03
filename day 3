@@ -1,0 +1,82 @@
+import numpy as np
+
+data = np.genfromtxt('input3.txt',dtype = str, delimiter = '\t')
+
+# part 1
+
+mylist2 = [0] * len(data[1])
+mylist3 = [1] * len(data[1])
+print(mylist2)
+
+for i in range(0,len(data[1])):
+    mylist = []
+    for j in range(0,data.shape[0]):
+        mylist.append(data[j][i])
+
+    if mylist.count('1')>mylist.count('0'):
+        mylist2[i] = 1
+        mylist3[i] = 0
+
+mylist2_str = ''.join(map(str, mylist2))
+mylist3_str = ''.join(map(str, mylist3))
+gamma = int(mylist2_str, 2)
+epsilon = int(mylist3_str, 2)
+
+print(gamma)
+print(epsilon)
+print(gamma*epsilon)
+
+
+# part 2
+def ith_bit(i,cur_list):
+    mylist = []
+    cur_list = np.array(cur_list)
+    for j in range(0,cur_list.shape[0]):
+        mylist.append(cur_list[j][i])
+    return mylist
+
+
+def filter(value, cur_list):
+    mylist2 = []
+    cur_list = np.array(cur_list)
+    for y in range(0,cur_list.shape[0]):
+        if cur_list[y][i] == value:
+            mylist2.append(cur_list[y])
+    return mylist2
+
+
+mylist_O2=data
+mylist_CO2=data
+value1 = '1'
+value0 = '0'
+
+
+for i in range(0,len(data[1])):
+    mylist = ith_bit(i,mylist_O2)
+    if len(mylist) > 1:
+        if mylist.count('1')>=mylist.count('0'):
+            mylist_O2 = filter(value1, mylist_O2)
+        else:
+            mylist_O2 = filter(value0, mylist_O2)
+
+
+for i in range(0,len(data[1])):
+    mylist = ith_bit(i,mylist_CO2)
+    if len(mylist) > 1:
+        if mylist.count('1')>=mylist.count('0'):
+            mylist_CO2 = filter(value0, mylist_CO2)
+        else:
+            mylist_CO2 = filter(value1, mylist_CO2)
+
+
+print(mylist_O2)
+print(mylist_CO2)
+
+mylist_O2_str = ''.join(map(str, mylist_O2))
+mylist_CO2_str = ''.join(map(str, mylist_CO2))
+O2 = int(mylist_O2_str, 2)
+CO2 = int(mylist_CO2_str, 2)
+
+print(O2)
+print(CO2)
+print(O2*CO2)
