@@ -1,0 +1,35 @@
+import numpy as np
+
+data = np.genfromtxt('input2.txt',dtype = str, delimiter = ' ')
+
+# part 1
+depth = 0
+horizon = 0
+for i in range(0,len(data)):
+    if data[i,0] == 'down':
+        depth = depth + int(data[i,1])
+    elif data[i,0] == 'up':
+        depth = depth - int(data[i,1])
+    else:
+        horizon = horizon + int(data[i,1])
+
+print(depth)
+print(horizon)
+print(depth*horizon)
+
+
+# part 2
+
+aim = 0
+depth = 0
+horizon = 0
+for i in range(0,len(data)):
+    if data[i,0] == 'down':
+        aim = aim + int(data[i,1])
+    elif data[i,0] == 'up':
+        aim = aim - int(data[i,1])
+    else:
+        horizon = horizon + int(data[i,1])
+        depth = depth + aim*int(data[i,1])
+
+print(depth*horizon)
