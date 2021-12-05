@@ -1,0 +1,76 @@
+import numpy as np
+import collections
+
+######### DATA PREPARATION
+data = np.genfromtxt('day4.txt',dtype=str, delimiter = '\t')
+# split the first list
+list_ori = data[0]
+list_ori = list_ori.split(',')
+
+# split the rest of the list to array of array
+list_rest = data[1:]
+
+v = int(len(list_rest))
+M = [[] for _ in range(v)]
+r = 0
+for i in list_rest:
+  M[r].append(i)
+  r += 1
+  if r == v:
+    r = 0
+
+# split the string ['49 74 83 34 40'] to list of numbers['49','74','83','34','40']
+splitM = [i[0].split() for i in M]
+#print(splitM[1][1])
+
+# construct array of array
+m=[]
+while splitM != []:
+  m.append(splitM[:5])
+  splitM = splitM[5:]
+
+
+######### PART 1 & 2
+mylist1 = []
+mylist2 = []
+for j in range(0,len(m)):
+  myrow = []
+  mycol = []
+  for i in range(0,len(list_ori)):
+    myarray = np.array(m[j])
+    index_y,index_x = np.where(myarray == list_ori[i])
+    if len(index_x) != 0 and len(index_y) != 0:
+      myrow.append(index_y[0])
+      mycol.append(index_x[0])
+    
+    counterrow=collections.Counter(myrow)
+    countercol=collections.Counter(mycol)
+    if list(counterrow.values()).count(5) == 1 or list(countercol.values()).count(5) == 1:
+      break  
+    templist = [i+1,j,myrow,mycol]
+  if j == 0:
+    mylist1 = templist
+    mylist2 = templist
+  elif templist[0]<mylist1[0]:
+    mylist1 = templist
+  elif templist[0]>mylist2[0]:
+    mylist2 = templist
+print(mylist1)
+print(mylist2)
+
+def score(mylist, list_original):
+  rows = np.array(mylist[2], dtype=np.intp)
+  columns = np.array(mylist[3], dtype=np.intp)
+  target = np.array(m[mylist[1]])
+  mylist_temp = []
+  for i in range(0, len(target)):
+    for item in target[i]:
+      if item not in target[rows,columns]:
+        mylist_temp.append(item)
+  test_list = [int(i) for i in mylist_temp]
+  list_original = [int(i) for i in list_original]
+  scorefinal = np.sum(test_list)*list_original[mylist[0]]
+  return scorefinal
+
+print(score(mylist1,list_ori))
+print(score(mylist2,list_ori))
