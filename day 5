@@ -1,0 +1,53 @@
+import numpy as np
+import collections
+
+######### DATA PREPARATION
+data = []
+i = 0
+with open('input5.txt', 'r') as openfile:
+    for line in openfile:
+        data.append([])
+        data[i] = [str. rstrip(n) for n in line.split(' -> ')]
+        data[i][0] = [int(x) for x in data[i][0].split(',')]
+        data[i][1] = [int(x) for x in data[i][1].split(',')]
+        i += 1
+
+######### part 1 & 2
+mylist = []
+for item in data:
+    
+    if item[0][0] == item[1][0]:
+        value = abs(item[0][1]-item[1][1])+1
+        y = list(range(min(item[0][1],item[1][1]), max(item[0][1],item[1][1])+1))
+        x = [item[0][0]]*value
+    
+    elif item[0][1] == item[1][1]:
+        value = abs(item[0][0]-item[1][0])+1
+        y = [item[0][1]]*value
+        x = list(range(min(item[0][0],item[1][0]), max(item[0][0],item[1][0])+1))
+#### the following block can be removed for part 1  
+    elif abs(item[0][1] - item[1][1]) == abs(item[0][0] - item[1][0]):
+        if (item[0][1] - item[1][1]) == (item[0][0] - item[1][0]):
+            x = list(range(min(item[0][0],item[1][0]), max(item[0][0],item[1][0])+1))
+            y = list(range(min(item[0][1],item[1][1]), max(item[0][1],item[1][1])+1))
+        else:
+            x = list(range(min(item[0][0],item[1][0]), max(item[0][0],item[1][0])+1))
+            y = np.arange(max(item[0][1],item[1][1]), min(item[0][1],item[1][1])-1, -1).tolist()
+#### end of block
+
+    else:
+        x = []
+        y = []
+        
+    templist = list(zip(x, y))
+    for item2 in templist:
+        mylist.append(item2)
+
+
+counts=collections.Counter(mylist)
+countfinal = 0
+for item in list(counts.values()):
+    if item >= 2:
+       countfinal += 1 
+
+print(countfinal)
