@@ -1,0 +1,23 @@
+
+data = open("input7.txt", "r")
+data = [int(n) for n in data.read().split(',')]
+
+### part 1
+
+print(min(data),max(data))
+
+diff = [0]*1953
+for i in range(1953):
+    for item in data:
+        diff[i] = diff[i] + abs(item - i)
+
+print(min(diff))
+
+
+### part 2
+diff = [0]*1953
+for i in range(1953):
+    for item in data:
+        diff[i] = diff[i] + abs(item - i)*(abs(item - i)+1)/2
+
+print(min(diff))
