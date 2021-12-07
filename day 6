@@ -1,0 +1,15 @@
+### part 1
+for time in range(1,81):
+    if time == 1:
+        secondlist = [x for x in data if x ==0]
+        firstlist = [x-1 for x in data if x >0]     
+        templist = [6,8]*len(secondlist)
+        firstlist.extend([x for x in templist])
+    else:
+        secondlist = [x for x in firstlist if x ==0]
+        firstlist = [x-1 for x in firstlist if x >0]
+        templist = [6,8]*len(secondlist)
+        firstlist.extend([x for x in templist])
+
+
+print(len(firstlist))
