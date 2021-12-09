@@ -100,7 +100,5 @@ for i in range(0,len(data)):
     for t in range(0,4):
         if set(data[i][1][t]) in listset:
             sumall += listset.index(set(data[i][1][t]))*(10**(3-t))
-#        elif [len(data[i][1][t])] in listset:
-#            sumall += len(data[i][1][t])*(10**(3-t))
 
 print(sumall)
