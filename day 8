@@ -1,0 +1,106 @@
+import numpy as np
+from functools import reduce
+
+######### DATA PREPARATION
+data = []
+i = 0
+with open('input8.txt', 'r') as openfile:
+    for line in openfile:
+        data.append([])
+        data[i] = [str. rstrip(n) for n in line.split(' | ')]
+        data[i][0] = [x for x in data[i][0].split(' ')]
+        data[i][1] = [x for x in data[i][1].split(' ')]
+        i += 1
+
+def split(word):
+    return [char for char in word]
+
+for item in data:
+    item[1] = [split(x) for x in item[1]]
+    
+
+
+### Part 1
+count = 0
+for i in range(0,len(data)):
+    for item in data[i][1]:
+        if len(item) in [2,3,4,7]:
+            count+=1
+        
+print(count)
+
+### Part 2
+
+# for each line, we need to determine the combination of letters for numbers 0 to 9
+# if length = [2,3,4,7], then the numbers are [1,7,4,8]
+# if length = 6, then the numbers are [0,6,9]
+# if length = 5, then the numbers are [2,3,5]
+
+# then, how to determine, in each line, which string refers to which number?
+
+# for the strings with length = 6
+# 6 does not contain one of the elements in 1
+# all the elements in 4 should be in 9
+# the rest is 0
+
+# for the strings with length = 5
+# the missing value of 6 is in the missing values of 5
+# all the values of 7 are included in 3
+
+
+
+sumall = 0
+
+for i in range(0,len(data)):
+    listset = [] 
+    # find the elements representing 1,4,7,8
+    mylist8 = [x for x in data[i][0] if len(x)==7]
+    mylist8 = split(mylist8[0])
+    mylist1 = [x for x in data[i][0] if len(x)==2]
+    mylist1 = split(mylist1[0])
+    mylist7 = [x for x in data[i][0] if len(x)==3]
+    mylist7 = split(mylist7[0])
+    mylist4 = [x for x in data[i][0] if len(x)==4]
+    mylist4 = split(mylist4[0])
+
+    # find the elements representing 0,6,9
+    mylist069 = [x for x in data[i][0] if len(x)==6]
+    mylist0 = []
+    mylist6 = []
+    mylist9 = []
+    for j in range(0,3):
+        if (mylist1[0] not in split(mylist069[j])) | (mylist1[1] not in split(mylist069[j])):
+            mylist6.append(mylist069[j])
+            mylist6 = split(mylist6[0])
+        elif set(mylist4).issubset(mylist069[j]) == True:
+            mylist9.append(mylist069[j])
+            mylist9 = split(mylist9[0])
+        else:
+            mylist0.append(mylist069[j])
+            mylist0 = split(mylist0[0])
+
+    # find the elements representing 2,3,5
+    mylist235 = [x for x in data[i][0] if len(x)==5]
+    mylist2 = []
+    mylist3 = []
+    mylist5 = []
+    for j in range(0,3):
+        if list(set(mylist8) - set(mylist6))[0] in (list(set(mylist8) - set(mylist235[j]))):
+            mylist5.append(mylist235[j])
+            mylist5 = split(mylist5[0])
+        elif set(mylist7).issubset(mylist235[j]) == True:
+            mylist3.append(mylist235[j])
+            mylist3 = split(mylist3[0])
+        else:
+            mylist2.append(mylist235[j])
+            mylist2 = split(mylist2[0])
+        
+    listset = [set(mylist0),set(mylist1),set(mylist2),set(mylist3),set(mylist4),set(mylist5),set(mylist6),set(mylist7),set(mylist8),set(mylist9)]
+ 
+    for t in range(0,4):
+        if set(data[i][1][t]) in listset:
+            sumall += listset.index(set(data[i][1][t]))*(10**(3-t))
+#        elif [len(data[i][1][t])] in listset:
+#            sumall += len(data[i][1][t])*(10**(3-t))
+
+print(sumall)
