@@ -1,0 +1,26 @@
+import numpy as np
+import collections
+
+######### DATA PREPARATION
+data = np.genfromtxt('input9.txt',dtype=str, delimiter = '\t')
+           
+### part 1
+
+mylist = []
+
+for i in range(0,len(data)):
+    for j in range(0,len(data[0])):
+        if [i,j] in [[0,0],[0,99],[99,0],[99,99]]:
+            if ((int(data[i][j]) < int(data[i][int(j*(97/99))+1])) & (int(data[i][j]) < int(data[int(i*(97/99))+1][j]))):
+                mylist.append(1+int(data[i][j]))
+        elif ((i in [0,99]) & (j > 0 & j < 99)):
+            if ((int(data[i][j]) < int(data[i][j-1])) & (int(data[i][j]) < int(data[i][j+1])) & (int(data[i][j]) < int(data[int(i*(97/99))+1][j]))):
+                mylist.append(1+int(data[i][j]))
+        elif ((j in [0,99]) & (i > 0 & i < 99)):
+            if ((int(data[i][j]) < int(data[i-1][j])) & (int(data[i][j]) < int(data[i+1][j])) & (int(data[i][j]) < int(data[i][int(j*(97/99))+1]))):
+                mylist.append(1+int(data[i][j]))
+        else:
+            if ((int(data[i][j]) < int(data[i-1][j])) & (int(data[i][j]) < int(data[i+1][j])) & (int(data[i][j]) < int(data[i][j+1])) & (int(data[i][j]) < int(data[i][j-1]))):
+                mylist.append(1+int(data[i][j]))
+
+print(sum(mylist))
