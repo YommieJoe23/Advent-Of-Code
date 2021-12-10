@@ -1,0 +1,50 @@
+import collections
+
+data = []
+with open("input10.txt") as file:
+    line = file.readline()
+    while line:
+        full = [x for x in line.strip('\n')]
+        stretched = [x for x in full]
+        data.append(stretched)
+        line = file.readline()
+
+print(len(data))
+
+##### part 1
+openlist = ['{','[','(','<']
+closelist = ['}',']',')','>']
+
+finallist = []
+
+for x in range(len(data)):
+    data_open = []
+    data_close = []
+    mylist = []
+    for i in range(len(data[x])):
+        if data[x][i] in openlist:
+            data_open.append([data[x][i],i])
+        else:
+            data_close.append([data[x][i],i])
+
+    for j in range(0,len(data_close)):
+        # get the position of the closing sign in the openlist
+        position = closelist.index(data_close[j][0])
+        # return the opening sign
+        sign = openlist[position]
+        # select only the opening sign happen before the closing sign
+        open_sofar = [item for item in data_open if item[1] < data_close[j][1]]
+        # find the last open sign so far
+        if open_sofar[-1][0] == sign:
+            data_open.remove(open_sofar[-1])
+        else:
+            mylist.append(data_close[j][0])
+        # get the first wrong value
+    if len(mylist)>0:
+        finallist.append(mylist[0])       
+
+frequency = collections.Counter(finallist)
+print(dict(frequency))
+
+#{')': 15, '}': 14, ']': 9, '>': 7}
+print(15*3+14*1197+9*57+7*25137)
