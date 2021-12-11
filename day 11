@@ -13,3 +13,12 @@ for i in range(len(data)):
 
 print(mylist)
 
+
+
+
+for i in range(1,101):
+
+  for j in range(0,range(len(mylist))):
+    mylist[j] = [x+1 for x in mylist[j]]
+
+  if 
