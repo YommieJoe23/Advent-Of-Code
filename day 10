@@ -1,7 +1,8 @@
 import collections
+import statistics as stat
 
 data = []
-with open("input10.txt") as file:
+with open("day10") as file:
     line = file.readline()
     while line:
         full = [x for x in line.strip('\n')]
@@ -16,6 +17,7 @@ openlist = ['{','[','(','<']
 closelist = ['}',']',')','>']
 
 finallist = []
+xlist = []
 
 for x in range(len(data)):
     data_open = []
@@ -42,62 +44,72 @@ for x in range(len(data)):
         # get the first wrong value
     if len(mylist)>0:
         finallist.append(mylist[0])       
-
+        xlist.append(x)
 frequency = collections.Counter(finallist)
 print(dict(frequency))
 
-#{')': 15, '}': 14, ']': 9, '>': 7}
-print(15*3+14*1197+9*57+7*25137)
+print(xlist)
 
+#{')': 13, '}': 16, ']': 12, '>': 10}
+print(13*3+16*1197+12*57+10*25137)
 
 
 ### part 2
 
 data2 = data
 
-for index in sorted(xlist, reverse=True):
-    del data2[index]
+#for index in sorted(xlist, reverse=True):
+#    del data2[index]
 
+templist = list(range(0,102))
+xlist2 = [x for x in templist if x not in xlist]
+data2 = [data2[i] for i in xlist2]
 
 
 finallist = []
 for x in range(len(data2)):
-    data_open = []
-    data_close = []
-    for i in range(len(data2[x])):
-        if data2[x][i] in openlist:
-            data_open.append(data2[x][i])
-        else:
-            data_close.append(data2[x][i])
-
-    data_open.reverse()
-    mylist = data_open[len(data_close):]
+  data_open = []
+  data_close = []
+  for i in range(len(data2[x])):
+      if data2[x][i] in openlist:
+          data_open.append([data2[x][i],i])
+      else:
+          data_close.append([data2[x][i],i])
     
-    for j in range(len(mylist)):
-        if mylist[j] == '(':
-            mylist[j] = 1
-        elif mylist[j] == '{':
-            mylist[j] = 3
-        elif mylist[j] == '[':
-            mylist[j] = 2
-        else:
-            mylist[j] = 4
+  for j in range(0,len(data_close)):
+      # get the position of the closing sign in the openlist
+      position = closelist.index(data_close[j][0])
+      # return the opening sign
+      sign = openlist[position]
+      # select only the opening sign happen before the closing sign
+      open_sofar = [item for item in data_open if item[1] < data_close[j][1]]
+      # find the last open sign so far
+      if open_sofar[-1][0] == sign:
+          data_open.remove(open_sofar[-1])
 
-    sumrow = 0
-    for y in range(len(mylist)):
-        if y == 0:
-            sumrow = sumrow + mylist[y]
-        else:
-            sumrow = 5*sumrow + mylist[y]
+  data_open.reverse()
+  
+  for j in range(len(data_open)):
+      if data_open[j][0] == '(':
+          data_open[j][0] = 1
+      elif data_open[j][0] == '{':
+          data_open[j][0] = 3
+      elif data_open[j][0] == '[':
+          data_open[j][0] = 2
+      else:
+          data_open[j][0] = 4
 
-    finallist.append(sumrow)
+  sumrow = 0
+  for y in range(len(data_open)):
+      if y == 0:
+          sumrow = sumrow + data_open[y][0]
+      else:
+          sumrow = 5*sumrow + data_open[y][0]
+
+  finallist.append(sumrow)
 
 print(finallist)
 
 print(stat.median(finallist))
-
-
-
-
 
 
