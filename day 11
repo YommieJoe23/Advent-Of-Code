@@ -1,0 +1,15 @@
+import numpy as np
+import collections
+
+######### DATA PREPARATION
+data = np.genfromtxt('input11',dtype=str, delimiter = '\t')
+
+mylist = []
+for i in range(len(data)):
+  result = []
+  for digit in data[i]:
+    result.append(int(digit))
+  mylist.append(result)
+
+print(mylist)
+
