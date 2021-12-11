@@ -48,3 +48,56 @@ print(dict(frequency))
 
 #{')': 15, '}': 14, ']': 9, '>': 7}
 print(15*3+14*1197+9*57+7*25137)
+
+
+
+### part 2
+
+data2 = data
+
+for index in sorted(xlist, reverse=True):
+    del data2[index]
+
+
+
+finallist = []
+for x in range(len(data2)):
+    data_open = []
+    data_close = []
+    for i in range(len(data2[x])):
+        if data2[x][i] in openlist:
+            data_open.append(data2[x][i])
+        else:
+            data_close.append(data2[x][i])
+
+    data_open.reverse()
+    mylist = data_open[len(data_close):]
+    
+    for j in range(len(mylist)):
+        if mylist[j] == '(':
+            mylist[j] = 1
+        elif mylist[j] == '{':
+            mylist[j] = 3
+        elif mylist[j] == '[':
+            mylist[j] = 2
+        else:
+            mylist[j] = 4
+
+    sumrow = 0
+    for y in range(len(mylist)):
+        if y == 0:
+            sumrow = sumrow + mylist[y]
+        else:
+            sumrow = 5*sumrow + mylist[y]
+
+    finallist.append(sumrow)
+
+print(finallist)
+
+print(stat.median(finallist))
+
+
+
+
+
+
