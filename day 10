@@ -61,7 +61,7 @@ data2 = data
 #for index in sorted(xlist, reverse=True):
 #    del data2[index]
 
-templist = list(range(0,102))
+templist = list(range(0,len(data)))
 xlist2 = [x for x in templist if x not in xlist]
 data2 = [data2[i] for i in xlist2]
 
